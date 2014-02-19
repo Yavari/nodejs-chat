@@ -2,15 +2,16 @@ var net = require('net');
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 
-var SocketServer = function(){
+var SocketServer = function(eventEmitter){
   var self = this;
+  this.eventEmitter = eventEmitter;
   var server = net.createServer(function(socket) {
     
     socket.on('data', function(data) {
-      self.emit('data', data);
+      self.eventEmitter.emit('message', data);
     });
 
-    self.on('data', function(data){
+    self.eventEmitter.on('message', function(data){
       socket.write(data);
     })
   });
@@ -22,6 +23,6 @@ var SocketServer = function(){
 
 util.inherits(SocketServer, EventEmitter);
 
-module.exports.createServer = function(){ 
-  return new SocketServer();
+module.exports.createServer = function(eventEmitter){ 
+  return new SocketServer(eventEmitter);
 };

@@ -1,0 +1,17 @@
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+var ws
+$(document).ready(function() {
+	console.log("hello");
+	 ws= new WebSocket('ws://127.0.0.1:8081', 'echo-protocol');
+	ws.addEventListener("message", function(e) {
+		// The data is simply the message that we're sending back
+		var msg = e.data;
+		console.log(msg);
+	});
+});
+</script>
+<body>
+	
+
+</body>
