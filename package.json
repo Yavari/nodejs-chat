@@ -1,0 +1,15 @@
+{
+  "name": "nodejs-chat",
+  "description": "A chat server",
+  "dependencies" : {
+    "websocket"   :  "1.0.*"
+  },
+   "devDependencies": {
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Yavari/nodejs-chat.git"
+  }
+}
+
