@@ -20,6 +20,10 @@ var SocketServer = function(server, eventEmitter){
 			connection.sendUTF(message);
 		});
 	});
+  this.close = function(callback){
+    console.log(wsServer);
+    wsServer.close(callback);
+  }
 }
 
 util.inherits(SocketServer, EventEmitter);

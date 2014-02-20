@@ -19,6 +19,10 @@ var SocketServer = function(eventEmitter){
   this.listen = function(port){
     server.listen(port);
   }
+
+  this.close = function(callback) {
+    server.close(callback);
+  }
 }
 
 util.inherits(SocketServer, EventEmitter);

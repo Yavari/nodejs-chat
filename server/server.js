@@ -8,20 +8,44 @@ var eventEmitter = new EventEmitter();
 
 var server = http.createServer();
 server.on('request', function(req, res){
+   
+
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello, world!\n');
+
   eventEmitter.on('message', function(data){ 
     res.write(data);
     if(JSON.parse(data).message.substr(0,3) == "end"){
         res.end();
       }
    });
+
+  //Need to destory connection in order to be able to close server
+  eventEmitter.on('send-close', function(){
+    req.destroy();
+  });
+
 });
-server.listen(8081);
 
 var socketServer = new SocketServer.createServer(eventEmitter);
 var webSocketServer = new WebSocketServer.createServer(server, eventEmitter);
-socketServer.listen(4001);
 
 eventEmitter.on('message', function(data){
   var obj = JSON.parse(data);
   console.log(obj.name + ": " + obj.message);
 });
+
+module.exports.createServer = function(eventEmitter){ 
+  return new SocketServer(eventEmitter);
+};
+
+exports.listen = function(httpPort, socketPort){
+	server.listen(httpPort);
+	socketServer.listen(socketPort);
+};
+
+exports.close = function(callback){
+  eventEmitter.emit('send-close');
+	server.close(callback);
+	socketServer.close(callback);
+};
